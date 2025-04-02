@@ -11,12 +11,18 @@ hamburger.addEventListener('click', () => {
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
+        const targetId = this.getAttribute('href');
+        const target = document.querySelector(targetId);
         if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
+            const headerOffset = 80; // Adjust this value based on your header height
+            const elementPosition = target.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
             });
+
             // Close mobile menu if open
             if (window.innerWidth <= 768) {
                 navLinks.style.display = 'none';
@@ -80,4 +86,24 @@ window.addEventListener('scroll', () => {
     } else {
         scrollButton.style.display = 'none';
     }
-}); 
+});
+
+// Create animated stars
+function createStars() {
+    const starsContainer = document.createElement('div');
+    starsContainer.className = 'stars';
+    
+    for (let i = 0; i < 200; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        star.style.left = `${Math.random() * 100}%`;
+        star.style.top = `${Math.random() * 100}%`;
+        star.style.animationDelay = `${Math.random() * 3}s`;
+        starsContainer.appendChild(star);
+    }
+    
+    document.body.appendChild(starsContainer);
+}
+
+// Call createStars when the page loads
+document.addEventListener('DOMContentLoaded', createStars); 
